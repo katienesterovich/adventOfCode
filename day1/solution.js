@@ -8,12 +8,16 @@ export const parseValues = (inputStrArr) => {
   const parsedNumbers = [];
 
   inputStrArr.forEach((input) => {
-    const firstNumber = input.match(/\d/);
-    const lastNumber = input.match(/(\d+)(?!.*\d)/);
+    const numbers = input.match(/\d/g);
     let combined;
-    if (firstNumber && lastNumber) {
-      combined = `${firstNumber[0]}${lastNumber[0]}`;
+    const arrLength = numbers?.length;
+
+    if (arrLength >= 2) {
+      combined = `${numbers[0]}${numbers[arrLength-1]}`;
+    } else if (arrLength === 1) {
+      combined = `${numbers[0]}${numbers[0]}`;
     }
+
     if (combined) parsedNumbers.push(Number(combined));
   });
   return parsedNumbers;
