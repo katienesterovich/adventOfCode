@@ -13,7 +13,7 @@ export const parseValues = (inputStrArr) => {
     const arrLength = numbers?.length;
 
     if (arrLength >= 2) {
-      combined = `${numbers[0]}${numbers[arrLength-1]}`;
+      combined = `${numbers[0]}${numbers[arrLength - 1]}`;
     } else if (arrLength === 1) {
       combined = `${numbers[0]}${numbers[0]}`;
     }
