@@ -1,7 +1,6 @@
 import fs from "fs";
 import readline from "readline";
 import path from "path";
-import { inputs } from "./input.js";
 
 const numberStringPairs = {
   one: 1,
@@ -14,18 +13,6 @@ const numberStringPairs = {
   eight: 8,
   nine: 9,
 };
-
-const numberAsStrings = [
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-];
 
 export const sumValues = (valuesArray) => {
   return valuesArray.reduce((partialSum, a) => partialSum + a, 0);
@@ -54,41 +41,37 @@ export const parseValues = (inputStrArr) => {
   let lastNumber;
 
   inputStrArr.forEach((str) => {
-    let firstInstance = 999999;
+    let firstInstanceIndex = 999999;
+    let lastInstanceIndex = -1;
     if (str) {
-      // Find first string number instance
-      numberAsStrings.forEach((numberAsString) => {
-        const occurence = str.indexOf(numberAsString);
-        if (occurence >= 0 && occurence < firstInstance) {
-          firstInstance = occurence;
+      Object.keys(numberStringPairs).forEach((numberAsString) => {
+        const firstOccurrence = str.indexOf(numberAsString);
+        const lastOccurrence = str.lastIndexOf(numberAsString);
+
+        if (firstOccurrence >= 0 && firstOccurrence < firstInstanceIndex) {
+          firstInstanceIndex = firstOccurrence;
           firstNumber = numberStringPairs[numberAsString];
         }
-      });
-      // Find first digit number instance
-      // TODO Combine with first as index
-      for (let index = 1; index <= 9; index++) {
-        const occurence = str.indexOf(index);
-        if (occurence >= 0 && occurence < firstInstance) {
-          firstInstance = occurence;
-          firstNumber = index;
-        }
-      }
 
-      let lastInstance = -1;
-
-      // Find last string number instance
-      numberAsStrings.forEach((numberAsString) => {
-        const occurence = str.lastIndexOf(numberAsString);
-        if (occurence >= 0 && occurence > lastInstance) {
-          lastInstance = occurence;
+        if (lastOccurrence >= 0 && lastOccurrence > lastInstanceIndex) {
+          lastInstanceIndex = lastOccurrence;
           lastNumber = numberStringPairs[numberAsString];
         }
       });
-      for (let index = 9; index > 0; index--) {
-        const occurence = str.lastIndexOf(index);
-        if (occurence >= 0 && occurence > lastInstance) {
-          lastInstance = occurence;
-          lastNumber = index;
+
+      for (let index = 1; index <= 9; index++) {
+        const reverseIndex = 10 - index;
+        const firstOccurrence = str.indexOf(index);
+        const lastOccurrence = str.lastIndexOf(reverseIndex);
+
+        if (firstOccurrence >= 0 && firstOccurrence < firstInstanceIndex) {
+          firstInstanceIndex = firstOccurrence;
+          firstNumber = index;
+        }
+
+        if (lastOccurrence >= 0 && lastOccurrence > lastInstanceIndex) {
+          lastInstanceIndex = lastOccurrence;
+          lastNumber = reverseIndex;
         }
       }
     }
@@ -98,14 +81,16 @@ export const parseValues = (inputStrArr) => {
       combined = `${firstNumber}${lastNumber}`;
     }
 
-    if (combined) parsedNumbers.push(Number(combined));
+    if (combined) {
+      parsedNumbers.push(Number(combined));
+    }
   });
   return parsedNumbers;
 };
 
 export const calculateSolution = async () => {
-  // const stringArr = await convertFileToStrArr("./day1/part2/input.txt");
-  const parsedValues = parseValues(inputs);
+  const stringArr = await convertFileToStrArr("./day1/part2/input.txt");
+  const parsedValues = parseValues(stringArr);
   const result = sumValues(parsedValues);
   console.log(`Result is: ${result}`);
 };
