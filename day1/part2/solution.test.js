@@ -37,7 +37,19 @@ describe("parseValues", () => {
     expect(parseValues(["oneight"])).toEqual([18]);
   });
   test("custom test 2", () => {
-    expect(parseValues(["oneight"])).toEqual([18]);
+    expect(parseValues(["2ffdz"])).toEqual([22]);
+  });
+  test("custom test 2", () => {
+    expect(parseValues(["ffdz2"])).toEqual([22]);
+  });
+  test("custom test 2", () => {
+    expect(parseValues(["twoffdz"])).toEqual([22]);
+  });
+  test("custom test 2", () => {
+    expect(parseValues(["ffdztwo"])).toEqual([22]);
+  });
+  test("custom test 2", () => {
+    expect(parseValues(["ffdztwowafe"])).toEqual([22]);
   });
   test("test9", () => {
     expect(parseValues([""])).toEqual([]);

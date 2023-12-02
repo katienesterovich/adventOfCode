@@ -1,6 +1,7 @@
 import fs from "fs";
 import readline from "readline";
 import path from "path";
+import { inputs } from "./input.js";
 
 const numberStringPairs = {
   one: 1,
@@ -78,14 +79,14 @@ export const parseValues = (inputStrArr) => {
       // Find last string number instance
       numberAsStrings.forEach((numberAsString) => {
         const occurence = str.lastIndexOf(numberAsString);
-        if (occurence > 0 && occurence > lastInstance) {
+        if (occurence >= 0 && occurence > lastInstance) {
           lastInstance = occurence;
           lastNumber = numberStringPairs[numberAsString];
         }
       });
-      for (let index = 9; index >= 0; index--) {
+      for (let index = 9; index > 0; index--) {
         const occurence = str.lastIndexOf(index);
-        if (occurence > 0 && occurence > lastInstance) {
+        if (occurence >= 0 && occurence > lastInstance) {
           lastInstance = occurence;
           lastNumber = index;
         }
@@ -103,8 +104,8 @@ export const parseValues = (inputStrArr) => {
 };
 
 export const calculateSolution = async () => {
-  const stringArr = await convertFileToStrArr("./day1/part2/input.txt");
-  const parsedValues = parseValues(stringArr);
+  // const stringArr = await convertFileToStrArr("./day1/part2/input.txt");
+  const parsedValues = parseValues(inputs);
   const result = sumValues(parsedValues);
   console.log(`Result is: ${result}`);
 };
